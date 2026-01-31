@@ -1,0 +1,45 @@
+.leather-surface {
+    position: relative;
+}
+
+.leather-surface::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/textures/leather-grain.webp');
+    background-size: 256px 256px;
+    background-repeat: repeat;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.leather-surface>* {
+    position: relative;
+    z-index: 2;
+}
+
+.leather-noir {
+    background-color: var(--color-noir);
+}
+
+.leather-espresso {
+    background-color: var(--color-espresso);
+}
+
+.leather-tobacco {
+    background-color: var(--color-tobacco);
+}
+
+.leather-bone {
+    background-color: var(--color-bone);
+}
+
+.vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(10, 10, 10, 0.4) 100%);
+    pointer-events: none;
+}

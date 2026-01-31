@@ -1,0 +1,42 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+}
+
+h1 {
+    font-size: var(--text-hero);
+}
+
+h2 {
+    font-size: var(--text-h1);
+}
+
+h3 {
+    font-size: var(--text-h2);
+}
+
+h4 {
+    font-size: var(--text-h3);
+}
+
+p {
+    font-family: var(--font-body);
+    line-height: var(--leading-relaxed);
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-honey);
+}

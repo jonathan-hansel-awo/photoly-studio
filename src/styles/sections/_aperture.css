@@ -1,0 +1,94 @@
+/**
+ * Aperture Overlay - Photoly Studio
+ * Fixed overlay that reveals content beneath via circular hole
+ */
+
+.aperture-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.aperture-overlay .aperture__iris {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.aperture-overlay .aperture__iris svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Hint text */
+.aperture-overlay .aperture__hint {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    transition: opacity 0.3s ease;
+}
+
+.aperture-overlay .aperture__hint-text {
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-ivory);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.aperture-overlay .aperture__hint-chevron {
+    width: 24px;
+    height: 24px;
+    color: var(--color-cognac);
+    animation: chevronBounce 1.5s ease-in-out infinite;
+}
+
+.aperture-overlay .aperture__hint-chevron svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* When aperture is complete, hide it */
+.aperture-overlay.is-complete {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+/* Hide completely after transition */
+.aperture-overlay.is-hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .aperture-overlay .aperture__hint {
+        bottom: 20%;
+    }
+
+    .aperture-overlay .aperture__hint-text {
+        font-size: var(--text-small);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aperture-overlay .aperture__hint-chevron {
+        animation: none;
+    }
+
+    .aperture-overlay {
+        display: none;
+    }
+}

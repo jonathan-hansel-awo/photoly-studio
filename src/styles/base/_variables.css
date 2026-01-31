@@ -1,0 +1,111 @@
+:root {
+    /* Colors - Dyed Leather Palette */
+    --color-noir: #0A0A0A;
+    --color-espresso: #1A1614;
+    --color-tobacco: #2C2622;
+    --color-driftwood: #6B5D52;
+    --color-bone: #E8E2D9;
+    --color-ivory: #FAF6F0;
+
+    /* Accent Colors */
+    --color-cognac: #C9A167;
+    --color-honey: #D4B078;
+    --color-saddle: #A67C42;
+
+    /* Corridor Zones */
+    --color-zone-portraits: #F5F0E8;
+    --color-zone-weddings: #F0E4DF;
+    --color-zone-editorial: #D5D0CB;
+    --color-zone-personal: #2A1A18;
+
+    /* Semantic */
+    --color-background: var(--color-noir);
+    --color-surface: var(--color-espresso);
+    --color-text-primary: var(--color-ivory);
+    --color-text-secondary: var(--color-driftwood);
+    --color-accent: var(--color-cognac);
+    --color-error: #C45B5B;
+
+    /* Typography */
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+
+    /* Font Sizes */
+    --text-hero: 4.5rem;
+    --text-h1: 3rem;
+    --text-h2: 2rem;
+    --text-h3: 1.5rem;
+    --text-body: 1.125rem;
+    --text-small: 0.875rem;
+    --text-micro: 0.75rem;
+
+    /* Line Heights */
+    --leading-none: 1;
+    --leading-tight: 1.1;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.75;
+
+    /* Font Weights */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+
+    /* Spacing */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --space-5: 3rem;
+    --space-6: 4rem;
+    --space-7: 6rem;
+    --space-8: 8rem;
+
+    /* Layout */
+    --container-max: 1440px;
+    --container-padding: 2rem;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+    --transition-slow: 500ms ease;
+    --transition-slower: 800ms ease;
+
+    /* Easing */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+    /* Shadows */
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 0 20px rgba(201, 161, 103, 0.3);
+
+    /* Border Radius */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --radius-full: 9999px;
+
+/* Z-Index */
+    --z-base: 0;
+    --z-above: 10;
+    --z-sticky: 100;
+    --z-fixed: 500;
+    --z-overlay: 1000;
+    --z-modal: 2000;
+    
+    /* Components */
+    --book-button-size: 3.5rem;
+    --input-height: 3rem;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --text-hero: 3rem;
+        --text-h1: 2rem;
+        --text-h2: 1.5rem;
+        --text-h3: 1.25rem;
+        --text-body: 1rem;
+        --container-padding: 1.5rem;
+    }
+}

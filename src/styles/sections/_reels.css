@@ -1,0 +1,121 @@
+.section--reels {
+    background-color: var(--color-tobacco);
+    display: flex;
+    align-items: center;
+    padding: var(--space-7) 0;
+    overflow: hidden;
+}
+
+.reels__container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.reels__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    color: var(--color-ivory);
+    text-align: center;
+    margin-bottom: var(--space-4);
+}
+
+.reels__row {
+    display: flex;
+    gap: var(--space-4);
+    width: max-content;
+}
+
+.reels__row--top {
+    animation: scrollLeft 60s linear infinite;
+}
+
+.reels__row--bottom {
+    animation: scrollRight 60s linear infinite;
+}
+
+.reels__container:hover .reels__row {
+    animation-play-state: paused;
+}
+
+.reels__card {
+    flex-shrink: 0;
+    width: 300px;
+    transition: transform var(--transition-normal) ease;
+}
+
+.reels__card:hover {
+    transform: scale(1.05);
+}
+
+.reels__card--image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.reels__card--image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow) ease;
+}
+
+.reels__card--image:hover img {
+    transform: scale(1.1);
+}
+
+.reels__card--text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    background-color: var(--color-bone);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 3;
+}
+
+.reels__card--text p {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--color-espresso);
+    line-height: var(--leading-relaxed);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .section--reels {
+        padding: var(--space-5) 0;
+    }
+
+    .reels__card {
+        width: 250px;
+    }
+
+    .reels__card--text p {
+        font-size: var(--text-body);
+    }
+
+    .reels__row--top,
+    .reels__row--bottom {
+        animation-duration: 40s;
+    }
+}
+
+@media (max-width: 425px) {
+    .reels__card {
+        width: 200px;
+    }
+
+    .reels__card--text {
+        padding: var(--space-3);
+    }
+
+    .reels__card--text p {
+        font-size: var(--text-small);
+    }
+}

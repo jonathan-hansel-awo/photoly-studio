@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Photoly Studio - Award-winning photography capturing life's most precious moments.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <title>Photoly Studio</title>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Aperture Overlay - sits on top of everything -->
+    <div class="aperture-overlay" data-aperture-overlay>
+        <div class="aperture__iris" data-aperture-iris></div>
+        <div class="aperture__hint" data-aperture-hint>
+            <span class="aperture__hint-text">Scroll to enter</span>
+            <div class="aperture__hint-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <button class="book-button" aria-label="Book a session" aria-hidden="true" data-book-button>
+        <span class="book-button__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="3" />
+            </svg>
+        </span>
+        <span class="book-button__text">Book</span>
+    </button>
+
+    <div class="progress-indicator" data-progress>
+        <div class="progress-indicator__bar"></div>
+    </div>
+
+    <main id="main-content">
+
+        <!-- Section 1: Hero (this is now the first real section) -->
+        <section id="hero" class="section section--hero" data-section="hero">
+            <div class="hero__background">
+                <div class="hero__image-container">
+                    <img src="/assets/images/hero/hero-signature.jpg" alt="Signature photograph" class="hero__image"
+                        loading="eager">
+                </div>
+                <div class="hero__overlay"></div>
+            </div>
+            <div class="hero__content">
+                <h1 class="hero__title">
+                    <span class="hero__title-line" data-hero-title>Photoly</span>
+                    <span class="hero__title-studio" data-hero-subtitle>Studio</span>
+                </h1>
+                <p class="hero__tagline" data-hero-tagline>Where light meets legacy</p>
+                <div class="hero__categories" data-hero-categories>
+                    <span>Weddings</span>
+                    <span class="hero__categories-dot">·</span>
+                    <span>Portraits</span>
+                    <span class="hero__categories-dot">·</span>
+                    <span>Stories</span>
+                </div>
+            </div>
+            <div class="hero__scroll-indicator">
+                <span>Explore</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Section 2: Photo Cube -->
+        <section id="cube" class="section section--cube" data-section="cube">
+            <div class="cube__container">
+                <div class="cube__canvas-container" data-cube-canvas></div>
+                <div class="cube__hint" data-cube-hint>Drag to explore</div>
+            </div>
+        </section>
+
+        <!-- Rest of sections remain the same... -->
+        <!-- Section 3: The Corridor -->
+        <section id="corridor" class="section section--corridor" data-section="corridor">
+            <div class="corridor__container">
+                <div class="corridor__canvas" data-corridor-canvas></div>
+                <div class="corridor__zone-indicator" data-corridor-zone>
+                    <span class="corridor__zone-name">Portraits</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: The Reels -->
+        <section id="reels" class="section section--reels" data-section="reels">
+            <div class="reels__container">
+                <h2 class="reels__title">Moments & Stories</h2>
+                <div class="reels__row reels__row--top" data-reels-row="top"></div>
+                <div class="reels__row reels__row--bottom" data-reels-row="bottom"></div>
+            </div>
+        </section>
+
+        <!-- Section 5: Letter to Light -->
+        <section id="letter" class="section section--letter" data-section="letter">
+            <div class="letter__container">
+                <div class="letter__content">
+                    <h2 class="letter__heading">A Letter to Light</h2>
+                    <div class="letter__text" data-letter-text>
+                        <p>Photography found me in the quiet moments—the way morning light spills through curtains, how
+                            laughter echoes in the space between seconds.</p>
+                        <p>I don't just take photographs. I listen. I wait. I witness.</p>
+                        <p>Every session begins with a conversation, not about poses or locations, but about what
+                            matters to you.</p>
+                        <p>These are the moments I chase. Not perfection, but truth. Not just beauty, but meaning.</p>
+                        <p>When you look at my photographs years from now, I want you to feel the warmth of that day.
+                        </p>
+                    </div>
+                    <p class="letter__signature">— The Photoly Team</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Viewfinder (Booking Form) -->
+        <section id="viewfinder" class="section section--viewfinder" data-section="viewfinder">
+            <div class="viewfinder__container">
+                <div class="viewfinder__frame">
+                    <div class="viewfinder__corner viewfinder__corner--tl"></div>
+                    <div class="viewfinder__corner viewfinder__corner--tr"></div>
+                    <div class="viewfinder__corner viewfinder__corner--bl"></div>
+                    <div class="viewfinder__corner viewfinder__corner--br"></div>
+
+                    <div class="viewfinder__content">
+                        <h2 class="viewfinder__title">Ready to Create?</h2>
+                        <p class="viewfinder__subtitle">Let's capture your story together</p>
+
+                        <form class="viewfinder__form" data-booking-form>
+                            <div class="form-group">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="session" class="form-label">Session Type</label>
+                                <select id="session" name="session" class="form-select" required>
+                                    <option value="" disabled selected>Choose a session</option>
+                                    <option value="portrait">Portrait</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="editorial">Editorial</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="date" class="form-label">Preferred Date</label>
+                                <input type="date" id="date" name="date" class="form-input">
+                            </div>
+
+                            <div class="form-group form-group--full">
+                                <label for="message" class="form-label">Your Vision</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="4"></textarea>
+                            </div>
+
+                            <button type="submit" class="viewfinder__shutter">
+                                <span class="viewfinder__shutter-ring">
+                                    <span class="viewfinder__shutter-button"></span>
+                                </span>
+                                <span class="viewfinder__shutter-text">Book Your Session</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: The Puzzle -->
+        <section id="puzzle" class="section section--puzzle" data-section="puzzle">
+            <div class="puzzle__container">
+                <h2 class="puzzle__title">One Last Moment</h2>
+                <p class="puzzle__subtitle">Piece together a memory</p>
+                <div class="puzzle__board" data-puzzle-board></div>
+                <div class="puzzle__controls">
+                    <button class="puzzle__skip" data-puzzle-skip>Skip</button>
+                    <span class="puzzle__counter" data-puzzle-counter>Puzzles solved: 0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer__container">
+                <span class="footer__logo">Photoly Studio</span>
+                <p class="footer__copyright">© 2026 Photoly Studio. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <script type="module" src="/scripts/main.js"></script>
+</body>
+
+</html>

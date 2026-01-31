@@ -1,0 +1,90 @@
+.section--letter {
+    background-color: var(--color-bone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--space-8) 0;
+}
+
+.letter__container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+.letter__content {
+    text-align: center;
+}
+
+.letter__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    color: var(--color-espresso);
+    margin-bottom: var(--space-6);
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.letter__text {
+    margin-bottom: var(--space-5);
+}
+
+.letter__text p {
+    font-size: var(--text-body);
+    color: var(--color-tobacco);
+    line-height: 2;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.letter__text p+p {
+    margin-top: var(--space-4);
+}
+
+.letter__signature {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-style: italic;
+    color: var(--color-cognac);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Animated states */
+.letter__heading.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-slower) ease,
+        transform var(--transition-slower) var(--ease-out-expo);
+}
+
+.letter__text p.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-slow) ease,
+        transform var(--transition-slow) var(--ease-out-expo);
+}
+
+.letter__signature.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-slower) ease,
+        transform var(--transition-slower) var(--ease-out-expo);
+}
+
+@media (max-width: 768px) {
+    .section--letter {
+        padding: var(--space-6) 0;
+    }
+
+    .letter__heading {
+        font-size: var(--text-h2);
+        margin-bottom: var(--space-5);
+    }
+
+    .letter__signature {
+        font-size: var(--text-body);
+    }
+}
