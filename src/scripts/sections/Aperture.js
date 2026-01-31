@@ -94,7 +94,7 @@ setupScrollTrigger() {
   this.scrollTrigger = ScrollTrigger.create({
     trigger: heroSection,
     start: 'top top',
-    end: '+=200', // 300px of scrolling to fully open (not tied to hero height)
+    end: '+=50', // 300px of scrolling to fully open (not tied to hero height)
     scrub: 0.3,
     onUpdate: (self) => this.updateAperture(self.progress),
     onLeave: () => this.onComplete(),
