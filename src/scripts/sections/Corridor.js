@@ -34,7 +34,7 @@ export default class Corridor {
           '/assets/images/corridor/portraits/portrait-3.jpg',
           '/assets/images/corridor/portraits/portrait-4.jpg'
         ],
-        pricing: 'Portraits · Starting at $500'
+        pricing: 'Portraits · Starting at £100'
       },
       { 
         name: 'Weddings', 
@@ -48,7 +48,7 @@ export default class Corridor {
           '/assets/images/corridor/weddings/wedding-3.jpg',
           '/assets/images/corridor/weddings/wedding-4.jpg'
         ],
-        pricing: 'Weddings · Starting at $3,000'
+        pricing: 'Weddings · Starting at £500'
       },
       { 
         name: 'Editorial', 
@@ -67,8 +67,8 @@ export default class Corridor {
       { 
         name: 'Personal', 
         start: 0.75, 
-        end: 1, 
-        wallColor: 0x2A1A18,
+        end: 1.5, 
+        wallColor: 0xf2e6c0,
         floorTexture: '/assets/textures/floors/walnut.jpg',
         images: [
           '/assets/images/corridor/personal/personal-1.jpg',
