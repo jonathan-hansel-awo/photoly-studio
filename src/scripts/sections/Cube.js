@@ -1,6 +1,6 @@
 /**
  * Photo Cube Section - Photoly Studio
- * Interactive 3D cube with photographs on each face
+ * Interactive 3D cube that expands images when face is front-facing
  */
 
 import * as THREE from 'three';
@@ -14,23 +14,41 @@ export default class Cube {
     
     this.isRunning = false;
     this.isDragging = false;
+    this.hasInteracted = false;
+    this.isExpanded = false;
+    this.isSnapping = false;
     this.previousMousePosition = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
+    this.lastInteractionTime = 0;
+    this.snapThreshold = 0.85; // How aligned the face needs to be (0-1, higher = more precise)
+    this.currentFrontFace = -1;
     
-    // Image paths for cube faces
-    this.faceImages = [
-      '/assets/images/cube/face-1.jpg',
-      '/assets/images/cube/face-2.jpg',
-      '/assets/images/cube/face-3.jpg',
-      '/assets/images/cube/face-4.jpg',
-      '/assets/images/cube/face-5.jpg',
-      '/assets/images/cube/face-6.jpg'
+    // Image paths and metadata for cube faces
+    this.faceData = [
+      { src: '/assets/images/cube/face-1.jpg', title: 'Eternal Moments', category: 'Weddings' },
+      { src: '/assets/images/cube/face-2.jpg', title: 'Natural Light', category: 'Portraits' },
+      { src: '/assets/images/cube/face-3.jpg', title: 'Urban Stories', category: 'Editorial' },
+      { src: '/assets/images/cube/face-4.jpg', title: 'Quiet Reflections', category: 'Personal' },
+      { src: '/assets/images/cube/face-5.jpg', title: 'Golden Hour', category: 'Landscapes' },
+      { src: '/assets/images/cube/face-6.jpg', title: 'Candid Joy', category: 'Lifestyle' }
+    ];
+    
+    // Face normals for detecting front-facing
+    this.faceNormals = [
+      new THREE.Vector3(1, 0, 0),   // Right face (index 0)
+      new THREE.Vector3(-1, 0, 0),  // Left face (index 1)
+      new THREE.Vector3(0, 1, 0),   // Top face (index 2)
+      new THREE.Vector3(0, -1, 0),  // Bottom face (index 3)
+      new THREE.Vector3(0, 0, 1),   // Front face (index 4)
+      new THREE.Vector3(0, 0, -1)   // Back face (index 5)
     ];
     
     this.init();
   }
 
   init() {
+    this.createExpandedViewHTML();
+    this.createHintHTML();
     this.setupScene();
     this.setupCamera();
     this.setupRenderer();
@@ -38,6 +56,52 @@ export default class Cube {
     this.loadTexturesAndCreateCube();
     this.bindEvents();
     this.start();
+  }
+
+  createExpandedViewHTML() {
+    // Create expanded view overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'cube__expanded';
+    overlay.setAttribute('data-cube-expanded', '');
+    overlay.innerHTML = `
+      <div class="cube__expanded-content">
+        <img class="cube__expanded-image" data-cube-expanded-image src="" alt="">
+        <div class="cube__expanded-caption">
+          <h3 class="cube__expanded-title" data-cube-expanded-title></h3>
+          <p class="cube__expanded-category" data-cube-expanded-category></p>
+        </div>
+        <p class="cube__expanded-hint">Tap to close</p>
+      </div>
+    `;
+    this.container.appendChild(overlay);
+    
+    this.expandedView = overlay;
+    this.expandedImage = overlay.querySelector('[data-cube-expanded-image]');
+    this.expandedTitle = overlay.querySelector('[data-cube-expanded-title]');
+    this.expandedCategory = overlay.querySelector('[data-cube-expanded-category]');
+  }
+
+  createHintHTML() {
+    // Update or create hint element
+    if (!this.hint) {
+      const hint = document.createElement('div');
+      hint.className = 'cube__hint';
+      hint.setAttribute('data-cube-hint', '');
+      this.canvasContainer.parentElement.appendChild(hint);
+      this.hint = hint;
+    }
+    
+    this.hint.innerHTML = `
+      <div class="cube__hint-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 12h8M12 8v8"/>
+          <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/>
+          <path d="M17 12l-2-2m2 2l-2 2"/>
+          <path d="M7 12l2-2m-2 2l2 2"/>
+        </svg>
+      </div>
+      <span class="cube__hint-text">Drag to explore</span>
+    `;
   }
 
   setupScene() {
@@ -64,146 +128,339 @@ export default class Cube {
     const ambient = new THREE.AmbientLight(0xffffff, 0.8);
     this.scene.add(ambient);
     
-    const directional = new THREE.DirectionalLight(0xffffff, 0.5);
+    const directional = new THREE.DirectionalLight(0xffffff, 0.6);
     directional.position.set(5, 5, 5);
     this.scene.add(directional);
+    
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    backLight.position.set(-5, -5, -5);
+    this.scene.add(backLight);
   }
 
   loadTexturesAndCreateCube() {
     const textureLoader = new THREE.TextureLoader();
-    const materials = [];
+    this.materials = [];
+    this.textures = [];
     
     let loadedCount = 0;
-    const totalTextures = this.faceImages.length;
+    const totalTextures = this.faceData.length;
     
-    this.faceImages.forEach((imagePath, index) => {
+    // Material order for BoxGeometry: +X, -X, +Y, -Y, +Z, -Z
+    // This matches our faceNormals order
+    this.faceData.forEach((face, index) => {
       textureLoader.load(
-        imagePath,
-        // Success callback
+        face.src,
         (texture) => {
           texture.colorSpace = THREE.SRGBColorSpace;
-          materials[index] = new THREE.MeshStandardMaterial({ 
+          this.textures[index] = texture;
+          this.materials[index] = new THREE.MeshStandardMaterial({ 
             map: texture,
-            roughness: 0.5,
+            roughness: 0.4,
             metalness: 0.1
           });
           
           loadedCount++;
           
-          // Once all textures are loaded, create the cube
           if (loadedCount === totalTextures) {
-            this.createCube(materials);
+            this.createCube();
           }
         },
-        // Progress callback
         undefined,
-        // Error callback - use fallback color
         (error) => {
-          console.warn(`Failed to load texture: ${imagePath}`, error);
+          console.warn(`Failed to load texture: ${face.src}`);
           const colors = [0xC9A167, 0x1A1614, 0xE8E2D9, 0x2C2622, 0xF5F0E8, 0x6B5D52];
-          materials[index] = new THREE.MeshStandardMaterial({ 
+          this.materials[index] = new THREE.MeshStandardMaterial({ 
             color: colors[index],
-            roughness: 0.5,
+            roughness: 0.4,
             metalness: 0.1
           });
+          this.textures[index] = null;
           
           loadedCount++;
           
           if (loadedCount === totalTextures) {
-            this.createCube(materials);
+            this.createCube();
           }
         }
       );
     });
   }
 
-  createCube(materials) {
+  createCube() {
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     
-    this.cube = new THREE.Mesh(geometry, materials);
+    this.cube = new THREE.Mesh(geometry, this.materials);
     this.scene.add(this.cube);
     
-    // Slow idle rotation
-    this.idleRotation = { x: 0.002, y: 0.003 };
+    // Slight initial rotation for visual interest
+    this.cube.rotation.x = 0.3;
+    this.cube.rotation.y = 0.5;
+    
+    // Idle rotation speeds
+    this.idleRotation = { x: 0.003, y: 0.005 };
     
     console.log('Cube created with textures');
   }
 
   bindEvents() {
     // Mouse events
-    this.canvasContainer.addEventListener('mousedown', (e) => this.onMouseDown(e));
-    window.addEventListener('mousemove', (e) => this.onMouseMove(e));
-    window.addEventListener('mouseup', () => this.onMouseUp());
+    this.canvasContainer.addEventListener('mousedown', (e) => this.onPointerDown(e));
+    window.addEventListener('mousemove', (e) => this.onPointerMove(e));
+    window.addEventListener('mouseup', () => this.onPointerUp());
     
     // Touch events
-    this.canvasContainer.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: true });
-    window.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
-    window.addEventListener('touchend', () => this.onTouchEnd());
+    this.canvasContainer.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
+    window.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
+    window.addEventListener('touchend', () => this.onPointerUp());
     
     // Resize
     window.addEventListener('resize', () => this.onResize());
+    
+    // Expanded view close events
+    this.expandedView.addEventListener('click', () => this.closeExpandedView());
+    this.expandedView.addEventListener('touchstart', () => this.closeExpandedView());
+    
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isExpanded) {
+        this.closeExpandedView();
+      }
+    });
   }
 
-  onMouseDown(e) {
+  onPointerDown(e) {
+    if (this.isExpanded || this.isSnapping) return;
+    
     this.isDragging = true;
+    this.hasInteracted = true;
     this.previousMousePosition = { x: e.clientX, y: e.clientY };
+    this.velocity = { x: 0, y: 0 };
+    this.lastInteractionTime = Date.now();
+    
     this.hideHint();
   }
 
-  onMouseMove(e) {
-    if (!this.isDragging) return;
-    
-    const deltaX = e.clientX - this.previousMousePosition.x;
-    const deltaY = e.clientY - this.previousMousePosition.y;
-    
-    this.velocity.x = deltaY * 0.005;
-    this.velocity.y = deltaX * 0.005;
-    
-    if (this.cube) {
-      this.cube.rotation.x += this.velocity.x;
-      this.cube.rotation.y += this.velocity.y;
-    }
-    
-    this.previousMousePosition = { x: e.clientX, y: e.clientY };
-  }
-
-  onMouseUp() {
-    this.isDragging = false;
-  }
-
   onTouchStart(e) {
-    if (e.touches.length === 1) {
-      this.isDragging = true;
-      this.previousMousePosition = { 
-        x: e.touches[0].clientX, 
-        y: e.touches[0].clientY 
-      };
-      this.hideHint();
-    }
-  }
-
-  onTouchMove(e) {
-    if (!this.isDragging || e.touches.length !== 1) return;
+    if (this.isExpanded || this.isSnapping) return;
+    if (e.touches.length !== 1) return;
     
-    const deltaX = e.touches[0].clientX - this.previousMousePosition.x;
-    const deltaY = e.touches[0].clientY - this.previousMousePosition.y;
-    
-    this.velocity.x = deltaY * 0.005;
-    this.velocity.y = deltaX * 0.005;
-    
-    if (this.cube) {
-      this.cube.rotation.x += this.velocity.x;
-      this.cube.rotation.y += this.velocity.y;
-    }
-    
+    e.preventDefault();
+    this.isDragging = true;
+    this.hasInteracted = true;
     this.previousMousePosition = { 
       x: e.touches[0].clientX, 
       y: e.touches[0].clientY 
     };
+    this.velocity = { x: 0, y: 0 };
+    this.lastInteractionTime = Date.now();
+    
+    this.hideHint();
   }
 
-  onTouchEnd() {
+  onPointerMove(e) {
+    if (!this.isDragging || this.isExpanded || this.isSnapping || !this.cube) return;
+    
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    
+    const deltaX = clientX - this.previousMousePosition.x;
+    const deltaY = clientY - this.previousMousePosition.y;
+    
+    this.velocity.x = deltaY * 0.008;
+    this.velocity.y = deltaX * 0.008;
+    
+    this.cube.rotation.x += this.velocity.x;
+    this.cube.rotation.y += this.velocity.y;
+    
+    this.previousMousePosition = { x: clientX, y: clientY };
+    this.lastInteractionTime = Date.now();
+  }
+
+  onTouchMove(e) {
+    if (!this.isDragging || this.isExpanded || this.isSnapping) return;
+    if (e.touches.length !== 1) return;
+    
+    e.preventDefault();
+    this.onPointerMove(e);
+  }
+
+  onPointerUp() {
+    if (!this.isDragging) return;
+    
     this.isDragging = false;
+    
+    // Check if a face is front-facing after drag ends
+    if (!this.isExpanded && !this.isSnapping) {
+      setTimeout(() => this.checkForFrontFace(), 100);
+    }
+  }
+
+  checkForFrontFace() {
+    if (!this.cube || this.isDragging || this.isExpanded || this.isSnapping) return;
+    
+    const cameraDirection = new THREE.Vector3(0, 0, -1); // Camera looks down -Z
+    
+    let bestFace = -1;
+    let bestAlignment = -1;
+    
+    this.faceNormals.forEach((normal, index) => {
+      // Transform the normal by the cube's rotation
+      const worldNormal = normal.clone().applyQuaternion(this.cube.quaternion);
+      
+      // Dot product with camera direction (looking at the cube from +Z)
+      // We want faces pointing toward camera (toward +Z)
+      const alignment = worldNormal.dot(new THREE.Vector3(0, 0, 1));
+      
+      if (alignment > bestAlignment) {
+        bestAlignment = alignment;
+        bestFace = index;
+      }
+    });
+    
+    // If alignment is good enough, snap and expand
+    if (bestAlignment >= this.snapThreshold && bestFace !== -1) {
+      this.snapToFace(bestFace);
+    }
+  }
+
+  snapToFace(faceIndex) {
+    if (this.isSnapping || this.isExpanded || !this.cube) return;
+    
+    this.isSnapping = true;
+    this.currentFrontFace = faceIndex;
+    
+    // Calculate target rotation to make this face perfectly front-facing
+    const targetRotation = this.getTargetRotationForFace(faceIndex);
+    
+    // Animate cube rotation to snap
+    gsap.to(this.cube.rotation, {
+      x: targetRotation.x,
+      y: targetRotation.y,
+      z: targetRotation.z,
+      duration: 0.4,
+      ease: 'power2.out',
+      onComplete: () => {
+        this.isSnapping = false;
+        // Small delay before expanding
+        setTimeout(() => this.expandFace(faceIndex), 200);
+      }
+    });
+  }
+
+  getTargetRotationForFace(faceIndex) {
+    // Returns the rotation needed to make a specific face point toward camera (+Z)
+    const rotations = [
+      { x: 0, y: -Math.PI / 2, z: 0 },  // Right face -> rotate Y -90°
+      { x: 0, y: Math.PI / 2, z: 0 },   // Left face -> rotate Y 90°
+      { x: Math.PI / 2, y: 0, z: 0 },   // Top face -> rotate X 90°
+      { x: -Math.PI / 2, y: 0, z: 0 },  // Bottom face -> rotate X -90°
+      { x: 0, y: 0, z: 0 },             // Front face -> no rotation
+      { x: 0, y: Math.PI, z: 0 }        // Back face -> rotate Y 180°
+    ];
+    
+    // Get current rotation and find nearest equivalent
+    const current = {
+      x: this.cube.rotation.x,
+      y: this.cube.rotation.y,
+      z: this.cube.rotation.z
+    };
+    
+    const target = rotations[faceIndex];
+    
+    // Normalize to nearest rotation (handle multiple rotations)
+    return {
+      x: this.nearestAngle(current.x, target.x),
+      y: this.nearestAngle(current.y, target.y),
+      z: this.nearestAngle(current.z, target.z)
+    };
+  }
+
+  nearestAngle(current, target) {
+    const TWO_PI = Math.PI * 2;
+    
+    // Normalize current to 0-2π range
+    let normalized = ((current % TWO_PI) + TWO_PI) % TWO_PI;
+    
+    // Find how many full rotations we've done
+    const fullRotations = Math.round(current / TWO_PI) * TWO_PI;
+    
+    // Adjust target to be closest to current
+    let adjustedTarget = target + fullRotations;
+    
+    // Check if going the other way is closer
+    if (Math.abs(adjustedTarget + TWO_PI - current) < Math.abs(adjustedTarget - current)) {
+      adjustedTarget += TWO_PI;
+    } else if (Math.abs(adjustedTarget - TWO_PI - current) < Math.abs(adjustedTarget - current)) {
+      adjustedTarget -= TWO_PI;
+    }
+    
+    return adjustedTarget;
+  }
+
+  expandFace(faceIndex) {
+    if (this.isExpanded) return;
+    
+    const faceData = this.faceData[faceIndex];
+    
+    this.isExpanded = true;
+    
+    // Set image
+    this.expandedImage.src = faceData.src;
+    this.expandedImage.alt = faceData.title;
+    
+    // Set caption
+    this.expandedTitle.textContent = faceData.title;
+    this.expandedCategory.textContent = faceData.category;
+    
+    // Show overlay with animation
+    this.expandedView.classList.add('is-open');
+    
+    gsap.fromTo(this.expandedImage,
+      { scale: 0.5, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }
+    );
+    
+    gsap.fromTo(this.expandedView.querySelector('.cube__expanded-caption'),
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, delay: 0.2, ease: 'power2.out' }
+    );
+  }
+
+  closeExpandedView() {
+    if (!this.isExpanded) return;
+    
+    gsap.to(this.expandedImage, {
+      scale: 0.8,
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in'
+    });
+    
+    gsap.to(this.expandedView.querySelector('.cube__expanded-caption'), {
+      y: 20,
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in',
+      onComplete: () => {
+        this.isExpanded = false;
+        this.expandedView.classList.remove('is-open');
+        this.currentFrontFace = -1;
+      }
+    });
+  }
+
+  hideHint() {
+    if (this.hint && !this.hint.classList.contains('is-hidden')) {
+      gsap.to(this.hint, {
+        opacity: 0,
+        y: 10,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          this.hint.classList.add('is-hidden');
+        }
+      });
+    }
   }
 
   onResize() {
@@ -213,12 +470,6 @@ export default class Cube {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
-  }
-
-  hideHint() {
-    if (this.hint && !this.hint.classList.contains('is-hidden')) {
-      this.hint.classList.add('is-hidden');
-    }
   }
 
   start() {
@@ -236,17 +487,29 @@ export default class Cube {
     
     requestAnimationFrame(() => this.animate());
     
-    if (this.cube) {
+    if (this.cube && !this.isExpanded && !this.isSnapping) {
+      const timeSinceInteraction = Date.now() - this.lastInteractionTime;
+      
       if (!this.isDragging) {
-        this.cube.rotation.x += this.idleRotation.x;
-        this.cube.rotation.y += this.idleRotation.y;
-        
-        // Momentum decay
-        this.velocity.x *= 0.95;
-        this.velocity.y *= 0.95;
+        // Apply momentum with decay
+        this.velocity.x *= 0.96;
+        this.velocity.y *= 0.96;
         
         this.cube.rotation.x += this.velocity.x;
         this.cube.rotation.y += this.velocity.y;
+        
+        // After momentum settles, check for front face
+        if (Math.abs(this.velocity.x) < 0.001 && Math.abs(this.velocity.y) < 0.001) {
+          if (this.hasInteracted && timeSinceInteraction > 500 && timeSinceInteraction < 600) {
+            this.checkForFrontFace();
+          }
+        }
+        
+        // Idle rotation when no recent interaction
+        if (!this.hasInteracted || timeSinceInteraction > 3000) {
+          this.cube.rotation.x += this.idleRotation.x;
+          this.cube.rotation.y += this.idleRotation.y;
+        }
       }
     }
     
