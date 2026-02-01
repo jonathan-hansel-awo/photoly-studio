@@ -21,13 +21,12 @@ export default class Puzzle {
     this.isAnimating = false;
     
     // Puzzle images
-    this.images = [
-      '/assets/images/puzzle/puzzle-1.jpg',
-      '/assets/images/puzzle/puzzle-2.jpg',
-      '/assets/images/puzzle/puzzle-3.jpg',
-      '/assets/images/puzzle/puzzle-4.jpg',
-      '/assets/images/puzzle/puzzle-5.jpg'
-    ];
+this.images = [
+  'https://picsum.photos/seed/puzzle1/1024/1024',
+  'https://picsum.photos/seed/puzzle2/1024/1024',
+  'https://picsum.photos/seed/puzzle3/1024/1024'
+];
+
     this.currentImageIndex = 0;
     this.currentImage = null;
     

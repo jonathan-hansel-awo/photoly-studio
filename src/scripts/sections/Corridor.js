@@ -65,36 +65,37 @@ export default class Corridor {
     ];
     
     // All corridor images with metadata
-    this.corridorImages = [
-      { src: '/assets/images/corridor/portraits/portrait-1.jpg', title: 'Portrait Study I', category: 'Portraits' },
-      { src: '/assets/images/corridor/portraits/portrait-2.jpg', title: 'Portrait Study II', category: 'Portraits' },
-      { src: '/assets/images/corridor/portraits/portrait-3.jpg', title: 'Portrait Study III', category: 'Portraits' },
-      { src: '/assets/images/corridor/portraits/portrait-4.jpg', title: 'Portrait Study IV', category: 'Portraits' },
-      { src: '/assets/images/corridor/weddings/wedding-1.jpg', title: 'The First Dance', category: 'Weddings' },
-      { src: '/assets/images/corridor/weddings/wedding-2.jpg', title: 'Golden Hour', category: 'Weddings' },
-      { src: '/assets/images/corridor/weddings/wedding-3.jpg', title: 'The Ceremony', category: 'Weddings' },
-      { src: '/assets/images/corridor/weddings/wedding-4.jpg', title: 'Forever Begins', category: 'Weddings' },
-      { src: '/assets/images/corridor/editorial/editorial-1.jpg', title: 'Urban Edge', category: 'Editorial' },
-      { src: '/assets/images/corridor/editorial/editorial-2.jpg', title: 'Fashion Forward', category: 'Editorial' },
-      { src: '/assets/images/corridor/editorial/editorial-3.jpg', title: 'Bold Statement', category: 'Editorial' },
-      { src: '/assets/images/corridor/editorial/editorial-4.jpg', title: 'Modern Classic', category: 'Editorial' },
-      { src: '/assets/images/corridor/personal/personal-1.jpg', title: 'Quiet Moments', category: 'Personal' },
-      { src: '/assets/images/corridor/personal/personal-2.jpg', title: 'Home', category: 'Personal' },
-      { src: '/assets/images/corridor/personal/personal-3.jpg', title: 'Wandering', category: 'Personal' },
-      { src: '/assets/images/corridor/personal/personal-4.jpg', title: 'Reflection', category: 'Personal' }
-    ];
+this.corridorImages = [
+     { src: 'https://picsum.photos/seed/p1/800/600', title: 'Portrait Study I', category: 'Portraits' },
+      { src: 'https://picsum.photos/seed/p2/800/600', title: 'Portrait Study II', category: 'Portraits' },
+      { src: 'https://picsum.photos/seed/p3/800/600', title: 'Portrait Study III', category: 'Portraits' },
+      { src: 'https://picsum.photos/seed/p4/800/600', title: 'Portrait Study IV', category: 'Portraits' },
+      { src: 'https://picsum.photos/seed/w1/800/600', title: 'The First Dance', category: 'Weddings' },
+      { src: 'https://picsum.photos/seed/w2/800/600', title: 'Golden Hour', category: 'Weddings' },
+      { src: 'https://picsum.photos/seed/w3/800/600', title: 'The Ceremony', category: 'Weddings' },
+      { src: 'https://picsum.photos/seed/w4/800/600', title: 'Forever Begins', category: 'Weddings' },
+      { src: 'https://picsum.photos/seed/e1/800/600', title: 'Urban Edge', category: 'Editorial' },
+      { src: 'https://picsum.photos/seed/e2/800/600', title: 'Fashion Forward', category: 'Editorial' },
+      { src: 'https://picsum.photos/seed/e3/800/600', title: 'Bold Statement', category: 'Editorial' },
+      { src: 'https://picsum.photos/seed/e4/800/600', title: 'Modern Classic', category: 'Editorial' },
+      { src: 'https://picsum.photos/seed/p1/800/600', title: 'Quiet Moments', category: 'Personal' },
+      { src: 'https://picsum.photos/seed/p2/800/600', title: 'Home', category: 'Personal' },
+      { src: 'https://picsum.photos/seed/p3/800/600', title: 'Wandering', category: 'Personal' },
+      { src: 'https://picsum.photos/seed/p4/800/600', title: 'Reflection', category: 'Personal' }
     
-    // End wall 3x3 grid images
-    this.endWallImages = [
-      { src: '/assets/images/corridor/endwall/end-1.jpg', title: 'Highlight I', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-2.jpg', title: 'Highlight II', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-3.jpg', title: 'Highlight III', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-4.jpg', title: 'Highlight IV', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-5.jpg', title: 'Highlight V', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-6.jpg', title: 'Highlight VI', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-7.jpg', title: 'Highlight VII', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-8.jpg', title: 'Highlight VIII', category: 'Featured' },
-      { src: '/assets/images/corridor/endwall/end-9.jpg', title: 'Highlight IX', category: 'Featured' }
+];
+
+// Replace this.endWallImages with:
+this.endWallImages = [
+      { src: 'https://picsum.photos/seed/end1/600/600', title: 'Highlight I', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end2/600/600', title: 'Highlight II', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end3/600/600', title: 'Highlight III', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end4/600/600', title: 'Highlight IV', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end5/600/600', title: 'Highlight V', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end6/600/600', title: 'Highlight VI', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end7/600/600', title: 'Highlight VII', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end8/600/600', title: 'Highlight VIII', category: 'Featured' },
+      { src: 'https://picsum.photos/seed/end9/600/600', title: 'Highlight IX', category: 'Featured' }
     ];
     
     this.currentZone = null;
@@ -534,30 +535,49 @@ export default class Corridor {
     }
   }
 
-  bindEvents() {
-    window.addEventListener('resize', () => this.onResize());
+bindEvents() {
+  window.addEventListener('resize', () => this.onResize());
+  
+  // Click/tap on canvas to select image
+  this.renderer.domElement.addEventListener('click', (e) => {
+    e.preventDefault();
+    this.onCanvasClick(e);
+  });
+  
+  this.renderer.domElement.addEventListener('touchend', (e) => {
+    // Don't prevent default here - needed for scroll
+    this.onCanvasTouch(e);
+  }, { passive: true });
+  
+  // Change cursor on hover
+  this.renderer.domElement.addEventListener('mousemove', (e) => this.onCanvasMouseMove(e));
+  
+  // Close expanded view - FIXED
+  this.expandedView.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Click/tap on canvas to select image
-    this.renderer.domElement.addEventListener('click', (e) => this.onCanvasClick(e));
-    this.renderer.domElement.addEventListener('touchend', (e) => this.onCanvasTouch(e));
-    
-    // Change cursor on hover
-    this.renderer.domElement.addEventListener('mousemove', (e) => this.onCanvasMouseMove(e));
-    
-    // Close expanded view
-    this.expandedView.addEventListener('click', (e) => {
-      if (e.target === this.expandedView || e.target.closest('[data-corridor-expanded-close]')) {
-        this.closeExpandedView();
-      }
-    });
-    
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isExpanded) {
-        this.closeExpandedView();
-      }
+    // Only close if clicking the backdrop, not the image
+    if (e.target === this.expandedView || e.target.closest('[data-corridor-expanded-close]')) {
+      this.closeExpandedView();
+    }
+  });
+  
+  // Prevent image click from closing
+  const image = this.expandedView.querySelector('.corridor__expanded-image');
+  if (image) {
+    image.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
   }
+  
+  // Escape key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && this.isExpanded) {
+      this.closeExpandedView();
+    }
+  });
+}
 
   onCanvasClick(e) {
     if (this.isExpanded) return;
@@ -611,54 +631,55 @@ export default class Corridor {
     }
   }
 
-  openExpandedView(imageData) {
-    this.isExpanded = true;
-    
-    // Set image source
-    this.expandedImage.src = imageData.imageSrc;
-    this.expandedImage.alt = imageData.title;
-    
-    // Set caption
-    if (this.expandedTitle) {
-      this.expandedTitle.textContent = imageData.title;
-    }
-    if (this.expandedCategory) {
-      this.expandedCategory.textContent = imageData.category;
-    }
-    
-    // Show overlay
-    this.expandedView.classList.add('is-open');
-    
-    // Pause scroll
-    if (this.scrollTrigger) {
-      this.scrollTrigger.disable();
-    }
-    
-    // Animate in
-    gsap.fromTo(this.expandedImage, 
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out' }
-    );
+openExpandedView(imageData) {
+  this.isExpanded = true;
+  
+  // Set image source
+  this.expandedImage.src = imageData.imageSrc;
+  this.expandedImage.alt = imageData.title;
+  
+  // Set caption
+  if (this.expandedTitle) {
+    this.expandedTitle.textContent = imageData.title;
   }
+  if (this.expandedCategory) {
+    this.expandedCategory.textContent = imageData.category;
+  }
+  
+  // Show overlay
+  this.expandedView.classList.add('is-open');
+  
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+  
+  // Pause scroll trigger but DON'T disable it
+  // This was causing the issue - disabling ScrollTrigger can cause jumps
+  
+  // Animate in
+  gsap.fromTo(this.expandedImage, 
+    { scale: 0.8, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out' }
+  );
+}
 
-  closeExpandedView() {
-    // Animate out
-    gsap.to(this.expandedImage, {
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.in',
-      onComplete: () => {
-        this.isExpanded = false;
-        this.expandedView.classList.remove('is-open');
-        
-        // Resume scroll
-        if (this.scrollTrigger) {
-          this.scrollTrigger.enable();
-        }
-      }
-    });
-  }
+closeExpandedView() {
+  if (!this.isExpanded) return;
+  
+  // Animate out
+  gsap.to(this.expandedImage, {
+    scale: 0.9,
+    opacity: 0,
+    duration: 0.3,
+    ease: 'power2.in',
+    onComplete: () => {
+      this.isExpanded = false;
+      this.expandedView.classList.remove('is-open');
+      
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
+  });
+}
 
   onResize() {
     const width = this.canvasContainer.clientWidth;

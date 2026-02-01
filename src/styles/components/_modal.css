@@ -133,3 +133,24 @@
 .btn--secondary:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
+
+/* Prevent any default link behavior on expanded overlays */
+.cube__expanded,
+.corridor__expanded,
+.reels__expanded {
+    /* Ensure no text selection during interaction */
+    user-select: none;
+    -webkit-user-select: none;
+
+    /* Prevent touch callout on iOS */
+    -webkit-touch-callout: none;
+}
+
+.cube__expanded-image,
+.corridor__expanded-image,
+.reels__expanded-image {
+    /* Prevent image dragging */
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: auto;
+}

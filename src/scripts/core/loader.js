@@ -6,7 +6,7 @@
 export function initLoader() {
   return new Promise((resolve) => {
     const criticalImages = [
-      '/assets/images/hero/hero-signature.jpg'
+      'https://picsum.photos/seed/rectangle/1024/1024'
     ];
 
     let loaded = 0;

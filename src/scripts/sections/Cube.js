@@ -25,12 +25,12 @@ export default class Cube {
     
     // Image paths and metadata for cube faces
     this.faceData = [
-      { src: '/assets/images/cube/face-1.jpg', title: 'Eternal Moments', category: 'Weddings' },
-      { src: '/assets/images/cube/face-2.jpg', title: 'Natural Light', category: 'Portraits' },
-      { src: '/assets/images/cube/face-3.jpg', title: 'Urban Stories', category: 'Editorial' },
-      { src: '/assets/images/cube/face-4.jpg', title: 'Quiet Reflections', category: 'Personal' },
-      { src: '/assets/images/cube/face-5.jpg', title: 'Golden Hour', category: 'Landscapes' },
-      { src: '/assets/images/cube/face-6.jpg', title: 'Candid Joy', category: 'Lifestyle' }
+      { src: 'https://picsum.photos/seed/cube1/1024/1024', title: 'Eternal Moments', category: 'Weddings' },
+      { src: 'https://picsum.photos/seed/cube2/1024/1024', title: 'Natural Light', category: 'Portraits' },
+      { src: 'https://picsum.photos/seed/cube3/1024/1024', title: 'Urban Stories', category: 'Editorial' },
+      { src: 'https://picsum.photos/seed/cube4/1024/1024', title: 'Quiet Reflections', category: 'Personal' },
+      { src: 'https://picsum.photos/seed/cube5/1024/1024', title: 'Golden Hour', category: 'Landscapes' },
+      { src: 'https://picsum.photos/seed/cube6/1024/1024', title: 'Candid Joy', category: 'Lifestyle' }
     ];
     
     // Face normals for detecting front-facing
@@ -202,31 +202,51 @@ export default class Cube {
     console.log('Cube created with textures');
   }
 
-  bindEvents() {
-    // Mouse events
-    this.canvasContainer.addEventListener('mousedown', (e) => this.onPointerDown(e));
-    window.addEventListener('mousemove', (e) => this.onPointerMove(e));
-    window.addEventListener('mouseup', () => this.onPointerUp());
-    
-    // Touch events
-    this.canvasContainer.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
-    window.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
-    window.addEventListener('touchend', () => this.onPointerUp());
-    
-    // Resize
-    window.addEventListener('resize', () => this.onResize());
-    
-    // Expanded view close events
-    this.expandedView.addEventListener('click', () => this.closeExpandedView());
-    this.expandedView.addEventListener('touchstart', () => this.closeExpandedView());
-    
-    // Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isExpanded) {
-        this.closeExpandedView();
-      }
+bindEvents() {
+  // Mouse events
+  this.canvasContainer.addEventListener('mousedown', (e) => this.onPointerDown(e));
+  window.addEventListener('mousemove', (e) => this.onPointerMove(e));
+  window.addEventListener('mouseup', () => this.onPointerUp());
+  
+  // Touch events
+  this.canvasContainer.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
+  window.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
+  window.addEventListener('touchend', () => this.onPointerUp());
+  
+  // Resize
+  window.addEventListener('resize', () => this.onResize());
+  
+  // Expanded view close events - FIXED: prevent default and stop propagation
+  this.expandedView.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.closeExpandedView();
+  });
+  
+  this.expandedView.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.closeExpandedView();
+  });
+  
+  // Prevent clicks on the image/content from closing
+  const content = this.expandedView.querySelector('.cube__expanded-content');
+  if (content) {
+    content.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    content.addEventListener('touchend', (e) => {
+      e.stopPropagation();
     });
   }
+  
+  // Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && this.isExpanded) {
+      this.closeExpandedView();
+    }
+  });
+}
 
   onPointerDown(e) {
     if (this.isExpanded || this.isSnapping) return;

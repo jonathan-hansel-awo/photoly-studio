@@ -14,7 +14,7 @@ export default class Reels {
     this.isExpanded = false;
     
     // Stories paired with images
-    this.stories = [
+     this.stories = [
       { text: "She laughed right before I clicked. That's the one.", image: '/assets/images/reels/reel-1.jpg', title: 'The Laugh' },
       { text: "4am. No sleep. Worth it.", image: '/assets/images/reels/reel-2.jpg', title: 'Golden Hour' },
       { text: "He didn't want photos. Now it's his favorite.", image: '/assets/images/reels/reel-3.jpg', title: 'The Reluctant Subject' },
@@ -177,85 +177,107 @@ export default class Reels {
     this.bottomRow.style.animationPlayState = 'running';
   }
 
-  setupClickToExpand() {
-    // Event delegation for image clicks
-    this.container.addEventListener('click', (e) => {
-      const imageCard = e.target.closest('[data-reels-image]');
-      if (imageCard && !this.isExpanded) {
-        this.openExpandedView(imageCard);
-      }
-    });
+setupClickToExpand() {
+  // Event delegation for image clicks
+  this.container.addEventListener('click', (e) => {
+    const imageCard = e.target.closest('[data-reels-image]');
+    if (imageCard && !this.isExpanded) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.openExpandedView(imageCard);
+    }
+  });
+  
+  // Close expanded view - FIXED
+  this.expandedView.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Close expanded view
-    this.expandedView.addEventListener('click', (e) => {
-      if (e.target === this.expandedView || 
-          e.target.closest('[data-reels-expanded-close]') ||
-          e.target.closest('.reels__expanded-hint')) {
-        this.closeExpandedView();
-      }
-    });
-    
-    // Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isExpanded) {
-        this.closeExpandedView();
-      }
+    // Close if clicking backdrop, close button, or hint
+    if (e.target === this.expandedView || 
+        e.target.closest('[data-reels-expanded-close]') ||
+        e.target.closest('.reels__expanded-hint')) {
+      this.closeExpandedView();
+    }
+  });
+  
+  // Prevent content click from closing
+  const content = this.expandedView.querySelector('.reels__expanded-content');
+  if (content) {
+    content.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
   }
+  
+  // Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && this.isExpanded) {
+      this.closeExpandedView();
+    }
+  });
+}
 
-  openExpandedView(imageCard) {
-    const imageSrc = imageCard.dataset.imageSrc;
-    const title = imageCard.dataset.imageTitle;
-    const story = imageCard.dataset.imageStory;
-    
-    this.isExpanded = true;
-    
-    // Pause animation
-    this.pauseAnimation();
-    
-    // Set content
-    this.expandedImage.src = imageSrc;
-    this.expandedImage.alt = title;
-    this.expandedTitle.textContent = title;
-    this.expandedStory.textContent = `"${story}"`;
-    
-    // Show overlay
-    this.expandedView.classList.add('is-open');
-    
-    // Animate in
-    gsap.fromTo(this.expandedImage,
-      { scale: 0.8, opacity: 0, y: 30 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.5)' }
-    );
-    
-    gsap.fromTo(this.expandedView.querySelector('.reels__expanded-caption'),
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: 'power2.out' }
-    );
-  }
+openExpandedView(imageCard) {
+  const imageSrc = imageCard.dataset.imageSrc;
+  const title = imageCard.dataset.imageTitle;
+  const story = imageCard.dataset.imageStory;
+  
+  this.isExpanded = true;
+  
+  // Pause animation
+  this.pauseAnimation();
+  
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+  
+  // Set content
+  this.expandedImage.src = imageSrc;
+  this.expandedImage.alt = title;
+  this.expandedTitle.textContent = title;
+  this.expandedStory.textContent = `"${story}"`;
+  
+  // Show overlay
+  this.expandedView.classList.add('is-open');
+  
+  // Animate in
+  gsap.fromTo(this.expandedImage,
+    { scale: 0.8, opacity: 0, y: 30 },
+    { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.5)' }
+  );
+  
+  gsap.fromTo(this.expandedView.querySelector('.reels__expanded-caption'),
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: 'power2.out' }
+  );
+}
 
-  closeExpandedView() {
-    if (!this.isExpanded) return;
-    
-    gsap.to(this.expandedImage, {
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.in'
-    });
-    
-    gsap.to(this.expandedView.querySelector('.reels__expanded-caption'), {
-      opacity: 0,
-      y: 10,
-      duration: 0.2,
-      ease: 'power2.in',
-      onComplete: () => {
-        this.isExpanded = false;
-        this.expandedView.classList.remove('is-open');
-        this.resumeAnimation();
-      }
-    });
-  }
+closeExpandedView() {
+  if (!this.isExpanded) return;
+  
+  gsap.to(this.expandedImage, {
+    scale: 0.9,
+    opacity: 0,
+    duration: 0.3,
+    ease: 'power2.in'
+  });
+  
+  gsap.to(this.expandedView.querySelector('.reels__expanded-caption'), {
+    opacity: 0,
+    y: 10,
+    duration: 0.2,
+    ease: 'power2.in',
+    onComplete: () => {
+      this.isExpanded = false;
+      this.expandedView.classList.remove('is-open');
+      
+      // Restore body scroll
+      document.body.style.overflow = '';
+      
+      // Resume animation
+      this.resumeAnimation();
+    }
+  });
+}
 
   destroy() {
     // Clean up
