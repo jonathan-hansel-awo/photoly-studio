@@ -1,6 +1,6 @@
 /**
- * Aperture Overlay - Photoly Studio
- * Fixed overlay with circular reveal that shows hero beneath
+ * Rotating Octagon Aperture - Photoly Studio
+ * 8-sided octagon hole that rotates faster as it opens
  */
 
 import { gsap } from 'gsap';
@@ -16,111 +16,160 @@ export default class Aperture {
     
     this.progress = 0;
     this.isComplete = false;
-    this.maskHole = null;
+    this.octagonElement = null;
+    this.rotationGroup = null;
     
     this.init();
   }
 
   init() {
-    this.createApertureSVG();
+    this.createRotatingOctagon();
     this.setupScrollTrigger();
-    
-    console.log('Aperture initialized');
   }
 
-  createApertureSVG() {
+  createRotatingOctagon() {
     const svgNS = 'http://www.w3.org/2000/svg';
     
-    // Create main SVG that covers entire viewport
     const svg = document.createElementNS(svgNS, 'svg');
     svg.setAttribute('viewBox', '0 0 100 100');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-    svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+    svg.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    `;
     
     // Create defs for mask
     const defs = document.createElementNS(svgNS, 'defs');
     
-    // Create mask
-    // In SVG masks: white = visible, black = hidden
-    // We want the OPPOSITE: show a hole, hide the rest
-    // So we use a white rect (show noir) with a black circle (hide = create hole)
+    // Create mask (white shows, black hides)
     const mask = document.createElementNS(svgNS, 'mask');
-    mask.setAttribute('id', 'aperture-hole-mask');
+    mask.setAttribute('id', 'octagon-mask');
     
-    // White background = noir overlay will be visible here
-    const maskRect = document.createElementNS(svgNS, 'rect');
-    maskRect.setAttribute('x', '0');
-    maskRect.setAttribute('y', '0');
-    maskRect.setAttribute('width', '100');
-    maskRect.setAttribute('height', '100');
-    maskRect.setAttribute('fill', 'white');
+    // White background = overlay will be visible
+    const maskBg = document.createElementNS(svgNS, 'rect');
+    maskBg.setAttribute('x', '0');
+    maskBg.setAttribute('y', '0');
+    maskBg.setAttribute('width', '100');
+    maskBg.setAttribute('height', '100');
+    maskBg.setAttribute('fill', 'white');
     
-    // Black circle = noir overlay will be HIDDEN here (creating the hole)
-    this.maskHole = document.createElementNS(svgNS, 'circle');
-    this.maskHole.setAttribute('cx', '50');
-    this.maskHole.setAttribute('cy', '50');
-    this.maskHole.setAttribute('r', '0'); // Start with no hole
-    this.maskHole.setAttribute('fill', 'black');
+    // Group for rotating octagon - starting with slight rotation for visual interest
+    this.rotationGroup = document.createElementNS(svgNS, 'g');
+    this.rotationGroup.setAttribute('transform', 'rotate(0 50 50)');
     
-    mask.appendChild(maskRect);
-    mask.appendChild(this.maskHole);
+    // Create octagon (black = creates hole in mask)
+    this.octagonElement = document.createElementNS(svgNS, 'polygon');
+    this.octagonElement.setAttribute('id', 'octagon-hole');
+    this.octagonElement.setAttribute('fill', 'black');
+    this.octagonElement.setAttribute('stroke', 'none');
+    
+    this.rotationGroup.appendChild(this.octagonElement);
+    
+    mask.appendChild(maskBg);
+    mask.appendChild(this.rotationGroup);
     defs.appendChild(mask);
     svg.appendChild(defs);
     
-    // The noir (black) overlay - masked to create hole
-    const noirOverlay = document.createElementNS(svgNS, 'rect');
-    noirOverlay.setAttribute('x', '0');
-    noirOverlay.setAttribute('y', '0');
-    noirOverlay.setAttribute('width', '100');
-    noirOverlay.setAttribute('height', '100');
-    noirOverlay.setAttribute('fill', '#0A0A0A');
-    noirOverlay.setAttribute('mask', 'url(#aperture-hole-mask)');
-    svg.appendChild(noirOverlay);
+    // Black overlay (masked by octagon)
+    const overlay = document.createElementNS(svgNS, 'rect');
+    overlay.setAttribute('x', '0');
+    overlay.setAttribute('y', '0');
+    overlay.setAttribute('width', '100');
+    overlay.setAttribute('height', '100');
+    overlay.setAttribute('fill', '#0A0A0A');
+    overlay.setAttribute('mask', 'url(#octagon-mask)');
+    svg.appendChild(overlay);
     
     this.irisContainer.appendChild(svg);
-    this.svg = svg;
+    
+    // Initial state (closed)
+    this.updateOctagon(0);
   }
 
-setupScrollTrigger() {
-  // Use the hero section as the trigger since aperture is fixed
-  const heroSection = document.querySelector('[data-section="hero"]');
-  
-  if (!heroSection) {
-    console.warn('No hero section found for aperture trigger');
-    this.onComplete();
-    return;
+  /**
+   * Calculate octagon points
+   * @param {number} size - 0 to 50 (radius from center)
+   * @returns {string} SVG points string
+   */
+  calculateOctagonPoints(size) {
+    const centerX = 50;
+    const centerY = 50;
+    const points = [];
+    
+    if (size <= 0) {
+      // When closed, return a point at the center
+      return `${centerX},${centerY}`;
+    }
+    
+    // Create octagon points (8 sides)
+    // For octagon, offset by 22.5° to have flat top
+    const sides = 8;
+    const offsetAngle = -Math.PI / 8; // -22.5° for flat top
+    
+    for (let i = 0; i < sides; i++) {
+      const angle = (i * 2 * Math.PI / sides) + offsetAngle;
+      const x = centerX + size * Math.cos(angle);
+      const y = centerY + size * Math.sin(angle);
+      points.push(`${x},${y}`);
+    }
+    
+    return points.join(' ');
   }
 
-  this.scrollTrigger = ScrollTrigger.create({
-    trigger: heroSection,
-    start: 'top top',
-    end: '+=50', // 300px of scrolling to fully open (not tied to hero height)
-    scrub: 0.3,
-    onUpdate: (self) => this.updateAperture(self.progress),
-    onLeave: () => this.onComplete(),
-    onEnterBack: () => this.onReset()
-  });
-}
+  updateOctagon(progress) {
+    // Size grows from 0 to 55 based on progress (slightly larger for full coverage)
+    const size = progress * 55;
+    
+    // Update octagon points
+    const points = this.calculateOctagonPoints(size);
+    this.octagonElement.setAttribute('points', points);
+    
+    // Apply FASTER rotation based on progress
+    // Increased from 60° to 240° total rotation for faster spin
+    const rotation = progress * 240;
+    this.rotationGroup.setAttribute('transform', `rotate(${rotation} 50 50)`);
+  }
+
+  setupScrollTrigger() {
+    const heroSection = document.querySelector('[data-section="hero"]');
+    const triggerElement = heroSection || this.container;
+    
+    this.scrollTrigger = ScrollTrigger.create({
+      trigger: triggerElement,
+      start: 'top top',
+      end: '+=50',
+      scrub: 0.5,
+      onUpdate: (self) => {
+        this.updateAperture(self.progress);
+      },
+      onLeave: () => this.onComplete(),
+      onEnterBack: () => this.onReset()
+    });
+  }
 
   updateAperture(progress) {
     this.progress = progress;
     
-    // Expand the hole radius from 0 to 80 (covers full viewport)
-    const radius = progress * 80;
-    this.maskHole.setAttribute('r', radius);
+    // Update octagon size and rotation
+    this.updateOctagon(progress);
     
     // Fade out hint
     if (this.hint) {
-      const hintOpacity = Math.max(0, 1 - (progress * 4));
-      this.hint.style.opacity = hintOpacity;
+      this.hint.style.opacity = Math.max(0, 1 - (progress * 4));
     }
     
     // Mark as opening
     if (progress > 0.01) {
       this.container.classList.add('is-opening');
+    } else {
+      this.container.classList.remove('is-opening');
     }
     
-    // Complete when hole is big enough
+    // Complete when fully open
     if (progress >= 0.95 && !this.isComplete) {
       this.onComplete();
     }
@@ -130,26 +179,19 @@ setupScrollTrigger() {
     if (this.isComplete) return;
     this.isComplete = true;
     
-    console.log('Aperture complete');
-    
     this.container.classList.add('is-complete');
     
-    // After fade transition, hide completely
     setTimeout(() => {
       this.container.classList.add('is-hidden');
     }, 600);
     
-    // Dispatch event for hero
     document.dispatchEvent(new CustomEvent('aperture:complete'));
   }
 
   onReset() {
     if (!this.isComplete) return;
-    
     this.isComplete = false;
-    this.container.classList.remove('is-complete');
-    this.container.classList.remove('is-hidden');
-    this.container.classList.remove('is-opening');
+    this.container.classList.remove('is-complete', 'is-hidden', 'is-opening');
   }
 
   destroy() {

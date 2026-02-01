@@ -73,6 +73,40 @@
     display: none;
 }
 
+/* Even smoother transitions for octagon animation */
+.aperture-overlay .aperture__iris polygon {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Bouncy easing for fun */
+}
+
+.aperture-overlay .aperture__iris g {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* When aperture is opening - faster transition */
+.aperture-overlay.is-opening .aperture__iris polygon,
+.aperture-overlay.is-opening .aperture__iris g {
+    transition-duration: 0.2s;
+}
+
+/* Optional: Add a subtle rotation effect to the hint too */
+.aperture-overlay.is-opening .aperture__hint-chevron {
+    animation: chevronBounce 1.5s ease-in-out infinite,
+        subtleRotate 2s ease-in-out infinite;
+}
+
+@keyframes subtleRotate {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+}
+
 @media (max-width: 768px) {
     .aperture-overlay .aperture__hint {
         bottom: 20%;
