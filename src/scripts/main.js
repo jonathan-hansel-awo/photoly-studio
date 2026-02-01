@@ -2,6 +2,9 @@
  * Main Entry Point - Photoly Studio
  */
 
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { initSmoothScroll } from './core/scroll.js';
 import { initResize } from './core/resize.js';
 import Aperture from './sections/Aperture.js';
@@ -14,6 +17,10 @@ import Viewfinder from './sections/Viewfinder.js';
 import Puzzle from './sections/Puzzle.js';
 import BookButton from './components/BookButton.js';
 import Modal from './components/Modal.js';
+import EscapeRails from './components/EscapeRails.js';
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 class App {
   constructor() {
@@ -32,7 +39,7 @@ class App {
     initSmoothScroll();
     initResize();
 
-    // Initialize aperture overlay (not a section anymore)
+    // Initialize aperture overlay
     const apertureOverlay = document.querySelector('[data-aperture-overlay]');
     if (apertureOverlay) {
       this.aperture = new Aperture(apertureOverlay);
@@ -49,16 +56,22 @@ class App {
   }
 
   initComponents() {
+    // Book button
     const bookButtonEl = document.querySelector('[data-book-button]');
     if (bookButtonEl) {
       this.components.bookButton = new BookButton(bookButtonEl);
     }
 
+    // Modal
     const modalEl = document.querySelector('[data-modal="booking"]');
     if (modalEl) {
       this.components.modal = new Modal(modalEl);
     }
 
+    // Escape Rails (mobile section skipping)
+    this.components.escapeRails = new EscapeRails();
+
+    // Progress indicator
     this.initProgressIndicator();
   }
 

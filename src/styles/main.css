@@ -1,4 +1,4 @@
-/* Main CSS Entry Point */
+/* Main CSS Entry Point - Photoly Studio */
 
 /* Base */
 @import './base/_variables.css';
@@ -13,6 +13,7 @@
 /* Components */
 @import './components/_book-button.css';
 @import './components/_modal.css';
+@import './components/_escape-rails.css';
 
 /* Sections */
 @import './sections/_base.css';

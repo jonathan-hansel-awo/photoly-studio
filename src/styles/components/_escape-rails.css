@@ -1,0 +1,193 @@
+/**
+ * Escape Rails - Photoly Studio
+ * Touch zones for mobile section skipping
+ */
+
+.escape-rail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    /* Only show on touch devices */
+    display: none;
+}
+
+@media (max-width: 1024px),
+(pointer: coarse) {
+    .escape-rail {
+        display: flex;
+    }
+}
+
+.escape-rail--left {
+    left: 0;
+    background: linear-gradient(to right, rgba(201, 161, 103, 0.15), transparent);
+}
+
+.escape-rail--right {
+    right: 0;
+    background: linear-gradient(to left, rgba(201, 161, 103, 0.15), transparent);
+}
+
+.escape-rail.is-visible {
+    opacity: 1;
+}
+
+.escape-rail.is-visible.has-target {
+    background: linear-gradient(to right, rgba(201, 161, 103, 0.25), transparent);
+}
+
+.escape-rail--right.is-visible.has-target {
+    background: linear-gradient(to left, rgba(201, 161, 103, 0.25), transparent);
+}
+
+/* Indicator */
+.escape-rail__indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2);
+    background-color: rgba(26, 22, 20, 0.9);
+    border-radius: var(--radius-md);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.escape-rail.is-swiping .escape-rail__indicator,
+.escape-rail.is-triggered .escape-rail__indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.escape-rail__arrow {
+    width: 24px;
+    height: 24px;
+    color: var(--color-cognac);
+    transition: transform 0.2s ease;
+}
+
+.escape-rail__arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Animate arrow based on swipe progress */
+.escape-rail.is-swiping .escape-rail__arrow {
+    animation: railArrowPulse 0.5s ease infinite;
+}
+
+.escape-rail__text {
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    color: var(--color-ivory);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Triggered state - success flash */
+.escape-rail.is-triggered {
+    background: linear-gradient(to right, rgba(201, 161, 103, 0.4), transparent);
+}
+
+.escape-rail--right.is-triggered {
+    background: linear-gradient(to left, rgba(201, 161, 103, 0.4), transparent);
+}
+
+.escape-rail.is-triggered .escape-rail__indicator {
+    background-color: var(--color-cognac);
+}
+
+.escape-rail.is-triggered .escape-rail__arrow {
+    color: var(--color-noir);
+}
+
+.escape-rail.is-triggered .escape-rail__text {
+    color: var(--color-noir);
+}
+
+/* Progress bar effect */
+.escape-rail::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--swipe-progress, 0) * 100%);
+    background: linear-gradient(to top, rgba(201, 161, 103, 0.3), transparent);
+    transition: height 0.1s ease;
+    pointer-events: none;
+}
+
+@keyframes railArrowPulse {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Visual hint lines on the edges */
+.escape-rail::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60px;
+    background-color: rgba(201, 161, 103, 0.3);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.escape-rail--left::after {
+    left: 8px;
+}
+
+.escape-rail--right::after {
+    right: 8px;
+}
+
+.escape-rail.is-visible::after {
+    opacity: 1;
+}
+
+.escape-rail.is-swiping::after {
+    background-color: var(--color-cognac);
+    opacity: 1;
+}
+
+/* Hide on desktop */
+@media (min-width: 1025px) and (pointer: fine) {
+    .escape-rail {
+        display: none !important;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .escape-rail,
+    .escape-rail__indicator,
+    .escape-rail__arrow {
+        transition: none;
+    }
+
+    .escape-rail.is-swiping .escape-rail__arrow {
+        animation: none;
+    }
+}
