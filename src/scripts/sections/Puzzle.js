@@ -22,9 +22,9 @@ export default class Puzzle {
     
     // Puzzle images
 this.images = [
-  'https://picsum.photos/seed/puzzle1/1024/1024',
-  'https://picsum.photos/seed/puzzle2/1024/1024',
-  'https://picsum.photos/seed/puzzle3/1024/1024'
+  'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1024&h=1024&q=80',
+  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1024&h=1024&q=80',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1024&h=1024&q=80'
 ];
 
     this.currentImageIndex = 0;

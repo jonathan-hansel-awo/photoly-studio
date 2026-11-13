@@ -25,12 +25,12 @@ export default class Cube {
     
     // Image paths and metadata for cube faces
     this.faceData = [
-      { src: 'https://picsum.photos/seed/cube1/1024/1024', title: 'Eternal Moments', category: 'Weddings' },
-      { src: 'https://picsum.photos/seed/cube2/1024/1024', title: 'Natural Light', category: 'Portraits' },
-      { src: 'https://picsum.photos/seed/cube3/1024/1024', title: 'Urban Stories', category: 'Editorial' },
-      { src: 'https://picsum.photos/seed/cube4/1024/1024', title: 'Quiet Reflections', category: 'Personal' },
-      { src: 'https://picsum.photos/seed/cube5/1024/1024', title: 'Golden Hour', category: 'Landscapes' },
-      { src: 'https://picsum.photos/seed/cube6/1024/1024', title: 'Candid Joy', category: 'Lifestyle' }
+      { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Eternal Moments', category: 'Weddings' },
+      { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Natural Light', category: 'Portraits' },
+      { src: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Urban Stories', category: 'Editorial' },
+      { src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Quiet Reflections', category: 'Personal' },
+      { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Golden Hour', category: 'Landscapes' },
+      { src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1024&h=1024&q=80', title: 'Candid Joy', category: 'Lifestyle' }
     ];
     
     // Face normals for detecting front-facing

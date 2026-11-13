@@ -6,7 +6,7 @@
 export function initLoader() {
   return new Promise((resolve) => {
     const criticalImages = [
-      'https://picsum.photos/seed/rectangle/1024/1024'
+      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&h=1080&q=80'
     ];
 
     let loaded = 0;

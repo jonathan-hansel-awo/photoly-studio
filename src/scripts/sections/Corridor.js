@@ -66,36 +66,36 @@ export default class Corridor {
     
     // All corridor images with metadata
 this.corridorImages = [
-     { src: 'https://picsum.photos/seed/p1/800/600', title: 'Portrait Study I', category: 'Portraits' },
-      { src: 'https://picsum.photos/seed/p2/800/600', title: 'Portrait Study II', category: 'Portraits' },
-      { src: 'https://picsum.photos/seed/p3/800/600', title: 'Portrait Study III', category: 'Portraits' },
-      { src: 'https://picsum.photos/seed/p4/800/600', title: 'Portrait Study IV', category: 'Portraits' },
-      { src: 'https://picsum.photos/seed/w1/800/600', title: 'The First Dance', category: 'Weddings' },
-      { src: 'https://picsum.photos/seed/w2/800/600', title: 'Golden Hour', category: 'Weddings' },
-      { src: 'https://picsum.photos/seed/w3/800/600', title: 'The Ceremony', category: 'Weddings' },
-      { src: 'https://picsum.photos/seed/w4/800/600', title: 'Forever Begins', category: 'Weddings' },
-      { src: 'https://picsum.photos/seed/e1/800/600', title: 'Urban Edge', category: 'Editorial' },
-      { src: 'https://picsum.photos/seed/e2/800/600', title: 'Fashion Forward', category: 'Editorial' },
-      { src: 'https://picsum.photos/seed/e3/800/600', title: 'Bold Statement', category: 'Editorial' },
-      { src: 'https://picsum.photos/seed/e4/800/600', title: 'Modern Classic', category: 'Editorial' },
-      { src: 'https://picsum.photos/seed/p1/800/600', title: 'Quiet Moments', category: 'Personal' },
-      { src: 'https://picsum.photos/seed/p2/800/600', title: 'Home', category: 'Personal' },
-      { src: 'https://picsum.photos/seed/p3/800/600', title: 'Wandering', category: 'Personal' },
-      { src: 'https://picsum.photos/seed/p4/800/600', title: 'Reflection', category: 'Personal' }
+     { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&h=600&q=80', title: 'Portrait Study I', category: 'Portraits' },
+      { src: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&h=600&q=80', title: 'Portrait Study II', category: 'Portraits' },
+      { src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&h=600&q=80', title: 'Portrait Study III', category: 'Portraits' },
+      { src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&h=600&q=80', title: 'Portrait Study IV', category: 'Portraits' },
+      { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&h=600&q=80', title: 'The First Dance', category: 'Weddings' },
+      { src: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&h=600&q=80', title: 'Golden Hour', category: 'Weddings' },
+      { src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&h=600&q=80', title: 'The Ceremony', category: 'Weddings' },
+      { src: 'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800&h=600&q=80', title: 'Forever Begins', category: 'Weddings' },
+      { src: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&h=600&q=80', title: 'Urban Edge', category: 'Editorial' },
+      { src: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&h=600&q=80', title: 'Fashion Forward', category: 'Editorial' },
+      { src: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=800&h=600&q=80', title: 'Bold Statement', category: 'Editorial' },
+      { src: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&h=600&q=80', title: 'Modern Classic', category: 'Editorial' },
+      { src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&h=600&q=80', title: 'Quiet Moments', category: 'Personal' },
+      { src: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&w=800&h=600&q=80', title: 'Home', category: 'Personal' },
+      { src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&h=600&q=80', title: 'Wandering', category: 'Personal' },
+      { src: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&h=600&q=80', title: 'Reflection', category: 'Personal' }
     
 ];
 
 // Replace this.endWallImages with:
 this.endWallImages = [
-      { src: 'https://picsum.photos/seed/end1/600/600', title: 'Highlight I', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end2/600/600', title: 'Highlight II', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end3/600/600', title: 'Highlight III', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end4/600/600', title: 'Highlight IV', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end5/600/600', title: 'Highlight V', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end6/600/600', title: 'Highlight VI', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end7/600/600', title: 'Highlight VII', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end8/600/600', title: 'Highlight VIII', category: 'Featured' },
-      { src: 'https://picsum.photos/seed/end9/600/600', title: 'Highlight IX', category: 'Featured' }
+      { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight I', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight II', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight III', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight IV', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight V', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight VI', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight VII', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight VIII', category: 'Featured' },
+      { src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=600&h=600&q=80', title: 'Highlight IX', category: 'Featured' }
     ];
     
     this.currentZone = null;
